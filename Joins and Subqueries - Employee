@@ -1,0 +1,19 @@
+CREATE TABLE Employee (Employee_id INT, First_name VARCHAR(30), Last_name VARCHAR(30), Hire_date DATE, Salary INT, Job_title VARCHAR(30), Manager_id INT, department_id INT);
+CREATE TABLE Departments(Department_id INT, Department_name VARCHAR(30), Manager_id INT, Location_id INT);
+CREATE TABLE Locations(Location_id INT, Street_address VARCHAR(30), Postal_code INT, city VARCHAR(30), state VARCHAR(30), Country_id INT);
+CREATE TABLE Manager(Manager_id INT, Manager_name VARCHAR(30));
+
+***Write a query to find the names (first_name, last_name), the salary of the employees who earn more than the average salary and who works in any of the IT departments***
+SELECT e.First_name,e.Last_name,e.Salary FROM Employee e JOIN Departments d ON e.department_id=d.department_id WHERE e.Salary>(SELECT AVG(Salary) FROM Employee) AND d.department_name='IT';
+
+***Write a query to find the names (first_name, last_name), the salary of the employees who earn the same salary as the minimum salary for all departments***
+SELECT First_name,Last_name,Salary FROM Employee WHERE Salary IN (SELECT MIN(Salary) FROM Employee);
+
+***Write a query to display the employee ID, first name, last names, salary of all employees whose salary is above average for their departments***
+SELECT e.Employee_id,e.First_name,e.Last_name,e.Salary FROM Employee e WHERE Salary>(SELECT AVG(e.Salary) FROM Employee e JOIN Departments d ON e.department_id=d.department_id);
+
+***Write a query to display the department name, manager name, and city***
+SELECT D.Department_name,m.Manager_name,l.city FROM Departments d JOIN Manager m ON d.Manager_id=m.Manager_id JOIN Locations l ON d.Location_id=l.Location_id;
+
+***Write a query to display the name (first_name, last_name), hire date, salary of all managers whose experience is more than 15 years***
+SELECT e.First_name, e.Last_name, e.Hire_date, e.Salary FROM Employee e JOIN Manager m ON e.Employee_id = m.Manager_id WHERE YEAR(CURDATE()) - YEAR(e.Hire_date) > 15;
