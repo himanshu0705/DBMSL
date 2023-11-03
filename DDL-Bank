@@ -13,7 +13,7 @@ JOIN Account a ON c.CustID=a.CustID
 WHERE AGE<45;
 
 ***Update the View with open date as 16/4/2017***
-UPDATE Customer_Info SET date_open='2017-0-16';
+UPDATE Customer_Info SET date_open='2017-04-16';
 
 ***Create a sequence on Branch Table***
 //In mysql simply add AUTO_INCREMENT on the column//
@@ -25,3 +25,27 @@ NOCYCLE;
 
 ***Create synonym ‘Branch_info’ for branch table***
 CREATE SYNONYM Branch_info FOR dbms.Branch; // does not work in mysql
+
+***Create a View as Saving account displaying the customer details with the open date as 16/8/2018***
+CREATE VIEW Saving_account AS 
+SELECT c.CustID,c.Name,c.Cust_Address,c.Phone_no,c.Email_ID,c.Age,a.Account_no,a.Branch_ID,a.date_open,a.Account_type,a.Balance FROM Customer c
+JOIN Account a ON c.CustID=a.CustID
+WHERE Account_type='Savings' and date_open='2018-08-16';
+
+***Update the View with Cust_Address as Pune for CustID=103***
+UPDATE Saving_account SET Cust_Address='Pune' WHERE CustID=103;
+
+***Create a View as Loan account displaying the customer details with the open date as 16/2/2018***
+CREATE VIEW Loan_account AS 
+SELECT c.CustID,c.Name,c.Cust_Address,c.Phone_no,c.Email_ID,c.Age,a.Account_no,a.Branch_ID,a.date_open,a.AccouNt_type,a.Balance FROM Customer c 
+JOIN Account a ON c.CustID=a.CustID 
+WHERE Account_type='Loan' and date_open='2018-02-16';
+
+***Create an Index on primary key column of table Customer***
+CREATE INDEX C_id ON Customer(CustID);
+
+***Create an Index on primary key column of table Branch***
+CREATE INDEX B_id ON Branch(Branch_ID);
+
+***Create synonym ‘Cust_info’ for branch table***
+CREATE SYNONYM Cust_info FOR dbms.Branch; // does not work in mysql
