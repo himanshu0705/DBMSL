@@ -22,3 +22,28 @@ CREATE TABLE Saving_Account AS SELECT Account_no,Branch_ID,CustID,date_open,Bala
 
 ***Display the customer details Age wise with balance>=20,000Rs***
 SELECT Customer.*,Account.Balance FROM Customer JOIN Account ON Customer.CustID=Account.CustID WHERE Account.Balance>=20000 ORDER BY Age;
+
+***Add the column “Email_Address” in Customer table***
+ALTER TABLE Customer ADD Email_Address VARCHAR(30);
+
+***Change the name of column “Email_Address” to “Email_ID” in Customer table***
+ALTER TABLE Customer RENAME COLUMN Email_Address TO Email_ID;
+
+***Display the customer details with highest balance in the account***
+SELECT Customer.*,Account.Balance FROM Customer 
+JOIN Account ON Customer.CustID=Account.CustID 
+WHERE Account.Balance IN (SELECT MAX(Balance) FROM Account);
+
+***Display the customer details with lowest balance for account type= “Saving Account”***
+SELECT Customer.*,Account.Balance FROM Customer 
+JOIN Account ON Customer.CustID=Account.CustID 
+WHERE Account.Balance IN (SELECT MIN(Balance) FROM Account) AND Account.Account_type='Saving';
+
+***Display the customer details that live in Pune and have age greater than 35***
+SELECT * FROM Customer WHERE Cust_Address='Pune' AND Age>35;
+
+***Display the Cust_ID, Name and Age of the customer in ascending order of their age***
+SELECT CustID,Name,Age FROM Customer ORDER BY Age;
+
+***Display the Name and Branch ID of the customer group by the Account_type***
+SELECT c.Name,a.Branch_ID,a.Account_type FROM Customer c JOIN Account a ON c.CustID=a.CustID GROUP BY a.Account_type,c.Name,a.Branch_ID;
