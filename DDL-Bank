@@ -1,32 +1,27 @@
+***Create the tables with referential integrity.***
 CREATE TABLE Customer(CustID INT, Name VARCHAR(30), Cust_Address VARCHAR(30), Phone_no BIGINT, Email_ID VARCHAR(30), Age INT);
 CREATE TABLE Branch(Branch_ID INT, Branch_Name VARCHAR(30), Address VARCHAR(30));
 CREATE TABLE Account (Account_no VARCHAR(30), Branch_ID INT REFERENCES Branch(Branch_ID), CustID INT REFERENCES Customer(CustID), date_open DATE, Account_type VARCHAR(30), Balance DECIMAL(10,2));
 
+***Create an Index on primary key column of table Account***
 CREATE INDEX A_id ON Account(Account_no);
 
-INSERT INTO Customer VALUES(51,'Himanshu','Pune',9075876433,'himanshukale7284@gmail.com',20), 
-                           (9,'Srushti','Bangalore',7744950140,'srushtikale344@gmail.com',24), 
-                           (19,'Baban','Yavatmal',9822695304,'babankale1969@gmail.com',54), 
-                           (12,'Kalpana','Yavatmal',9921534115,'kalpanakale@gmail.com',52);
-INSERT INTO Branch VALUES(001,'Pimpri','Pune'), 
-                         (002,'Arni Road','Yavatmal'), 
-                         (003,'Siemen','Bangalore');
-INSERT INTO Account VALUES('HKID07052003',001,51,'2020-05-07','Savings',4500),
-                          ('SKID20081999',003,9,'2016-08-20','Savings',40000), 
-                          ('BKID16021963',002,19,'2002-02-16','Current',200000), 
-                          ('KKID07031971',002,12,'2012-03-07','Savings',90000);
-
+***Create the view as Customer_Info displaying the customer details for age less than 45***
 CREATE VIEW Customer_Info AS 
 SELECT c.CustID,c.Name,c.Cust_Address,c.Phone_no,c.Email_ID,c.Age,a.Account_no,a.Branch_ID,a.date_open,a.AccouNt_type,a.Balance FROM Customer c 
 JOIN Account a ON c.CustID=a.CustID 
 WHERE AGE<45;
 
+***Update the View with open date as 16/4/2017***
 UPDATE Customer_Info SET date_open='2017-0-16';
 
-CREATE SEQUENCE sq1 // does not work in mysql
+***Create a sequence on Branch Table***
+//In mysql simply add AUTO_INCREMENT on the column//
+CREATE SEQUENCE sq1 // does not work in mysql//
 START WITH 1
 INCREMENT BY 1
 MAXVALUE 999
 NOCYCLE;
 
+***Create synonym ‘Branch_info’ for branch table***
 CREATE SYNONYM Branch_info FOR dbms.Branch; // does not work in mysql
