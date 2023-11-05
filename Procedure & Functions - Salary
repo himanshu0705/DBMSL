@@ -1,0 +1,51 @@
+CREATE TABLE Employee1(emp_id INT, dept_id INT, emp_name VARCHAR(30), DoJ DATE, salary NUMBER, commission NUMBER,job_title VARCHAR(30));
+
+SELECT * FROM Employee1;
+
+CREATE OR REPLACE PROCEDURE commission (
+    t_emp_id IN Employee1.emp_id%TYPE
+) IS
+t_salary NUMBER;
+experience INT;
+t_DoJ DATE;
+t_commision NUMBER;
+BEGIN
+    SELECT salary,DoJ INTO t_salary,t_DoJ FROM Employee1 WHERE emp_id = t_emp_id;
+    
+    experience := EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM t_DoJ);
+    IF(t_salary > 10000) THEN
+        t_commision := t_salary * 0.004;
+    ELSIF(t_salary < 10000 AND experience > 10) THEN
+        t_commision := t_salary * 0.0035;
+    ELSIF(t_salary < 3000) THEN
+        t_commision := t_salary * 0.0025;
+    ELSE
+        t_commision := t_salary * 0.0015;
+    END IF;
+    
+    UPDATE Employee1 SET commission=t_commision WHERE emp_id=t_emp_id;
+END;
+    
+BEGIN
+    commission(1);
+    commission(2);
+    commission(3);
+    commission(4);
+END;
+
+*******************************************************************************************************************************************************************************************************
+CREATE OR REPLACE FUNCTION manager(t_dept_id IN Employee1.dept_id%TYPE)
+RETURN VARCHAR
+IS
+    manager_name VARCHAR(30);
+BEGIN
+    SELECT emp_name INTO manager_name FROM Employee1 WHERE dept_id=t_dept_id AND job_title='Manager';
+    RETURN manager_name;
+END;
+
+DECLARE
+    manager_name Employee1.emp_name%TYPE;
+BEGIN
+    manager_name := manager(103);
+    DBMS_OUTPUT.PUT_LINE('Manager Name : ' || manager_name);
+END;
