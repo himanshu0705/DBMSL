@@ -1,0 +1,52 @@
+CREATE TABLE Account(Account_No VARCHAR(30), Cust_Name VARCHAR(30), Balance NUMBER, NoOfYears INT);
+CREATE TABLE Earned_Interest(Account_No VARCHAR(30), Interest_Amt NUMBER);
+
+SELECT * FROM Account;
+SELECT * FROM Earned_Interest;
+
+CREATE OR REPLACE PROCEDURE calc_interest (
+    t_Account_No IN Account.Account_No%TYPE,
+    t_Interest_Rate IN NUMBER
+) IS
+    t_Principal NUMBER;
+    t_NoOfYears NUMBER;
+    t_Interest_Amt NUMBER;
+BEGIN
+    SELECT Balance, NoOfYears INTO t_Principal, t_NoOfYears FROM Account WHERE Account_No = t_Account_No;
+    t_Interest_Amt := (t_Principal * t_NoOfYears * t_Interest_Rate) / 100;
+    
+    INSERT INTO Earned_Interest (Account_No, Interest_Amt) VALUES (t_Account_No, t_Interest_Amt);
+    FOR i IN (SELECT * FROM Earned_Interest) LOOP
+        DBMS_OUTPUT.PUT_LINE('Account_No: ' || i.Account_No || ', Interest_Amt: ' || i.Interest_Amt);
+    END LOOP;
+END;
+
+DECLARE
+    t_Account_No Account.Account_No%TYPE := '&Account_no';
+    t_Interest_Rate NUMBER := &Interest_rate;
+BEGIN
+    calc_interest(t_Account_No,t_Interest_Rate);
+END;
+
+************************************************************************************************************************************************************************************************
+CREATE OR REPLACE FUNCTION high_balance
+RETURN SYS_REFCURSOR IS
+    t_cursor SYS_REFCURSOR;
+BEGIN
+    OPEN t_cursor FOR
+        SELECT * FROM Account WHERE Balance > 50000;
+    RETURN t_cursor;
+END;
+
+DECLARE
+    t_cursor SYS_REFCURSOR;
+    acc Account%ROWTYPE;
+BEGIN
+    t_cursor := high_balance;
+    LOOP
+        FETCH t_cursor INTO acc;
+        EXIT WHEN t_cursor%NOTFOUND;
+        DBMS_OUTPUT.PUT_LINE('Account_No : ' || acc.Account_No || ', Cust_Name : ' || acc.Cust_Name || ', Balance : ' || acc.Balance || ', NoOfYears : ' || acc.NoOfYears);
+    END LOOP;
+    CLOSE t_cursor;
+END;
