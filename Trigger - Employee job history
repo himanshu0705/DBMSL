@@ -9,11 +9,6 @@ ID, old job title, old department ID, DoJ for start date, system date for end da
 CREATE TABLE Employee4(emp_id INT, dept_id INT, emp_name VARCHAR(30), DoJ DATE, salary NUMBER, commission NUMBER,job_title VARCHAR(30));
 CREATE TABLE job_history(emp_id INT, old_job_title VARCHAR(30), old_department_id INT, start_date DATE, end_date DATE);
 
-INSERT INTO Employee4 VALUES(1,101,'Himanshu','07-05-2020',100000,10000 ,'Data Scientist');
-INSERT INTO Employee4 VALUES(2,101,'Srushti','20-08-2020',40000,4000,'Full Stack Developer');
-INSERT INTO Employee4 VALUES(3,102,'Baban','16-02-1984',60000,6000,'Business Manager');
-INSERT INTO Employee4 VALUES(4,102,'Kalpana','07-03-1986',20000,2000,'Business Communist');
-
 SELECT * FROM Employee4;
 
 CREATE OR REPLACE TRIGGER salary_decrement
