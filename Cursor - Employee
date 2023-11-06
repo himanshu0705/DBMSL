@@ -1,0 +1,39 @@
+Consider a table Employee with schema as Employee (Emp_id, Emp_Name,Salary).
+1. Write an explicit cursor to display records of all employees with salary greater than 50,000.
+2. Write a PL/SQL block of code using Implicit Cursor that will display total number of tuples in Employee
+table.
+3. Write a PL/SQL block of code using Parameterized Cursor that will display salary of employee id entered by
+the user.
+
+
+
+CREATE TABLE Employee2(Emp_id INT, Emp_Name VARCHAR(30),Salary NUMBER);
+
+SELECT * FROM Employee2;
+
+DECLARE
+    CURSOR emp_cur IS SELECT Emp_id,Emp_Name,Salary FROM Employee2 WHERE Salary>50000;
+BEGIN
+    FOR i IN emp_cur LOOP
+        DBMS_OUTPUT.PUT_LINE('Emp ID : ' || i.Emp_id || ', Emp Name : ' || i.Emp_Name || ', Salary : ' || i.Salary);
+    END LOOP;
+END;
+
+********************************************************************************************************************************************************************************************************
+DECLARE
+    r_count NUMBER;
+BEGIN
+    SELECT COUNT(*) INTO r_count FROM Employee2;
+    DBMS_OUTPUT.PUT_LINE('Total Number of Employees : ' || r_count);
+END;
+
+********************************************************************************************************************************************************************************************************
+DECLARE
+    t_employee_id INT;
+    CURSOR salary(employee_id INT) IS SELECT Emp_Name,Salary FROM Employee2 WHERE emp_id=employee_id;
+BEGIN
+    t_employee_id := &Employee_id;
+    FOR i IN salary(t_employee_id) LOOP
+        DBMS_OUTPUT.PUT_LINE(i.Emp_Name || ' : ' || i.salary);
+    END LOOP;
+END;
