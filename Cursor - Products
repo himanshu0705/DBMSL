@@ -1,3 +1,13 @@
+Consider the following schema for Products table.
+Products(Product_id, Product_Name, Product_Type, Price)
+1. Write a parameterized cursor to display all products in the given price range of price and type ‘Apparel’.
+Hint: Take the user input for minimum and maximum price for price range.
+2. Write an explicit cursor to display information of all products with Price greater than 5000.
+3. Write an implicit cursor to display the number of records affected by the update operation incrementing Price
+of all products by 1000.
+
+
+
 CREATE TABLE Products(Product_id INT, Product_Name VARCHAR(30), Product_Type VARCHAR(30), Price NUMBER);
 
 SELECT * FROM Products;
