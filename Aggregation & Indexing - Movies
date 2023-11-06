@@ -1,0 +1,25 @@
+Create the Collection Movies_Data( Movie_ID, Movie_Name, Director, Genre, BoxOfficeCollection) and
+solve the following:
+
+db.createCollection("Movies_data");
+
+***Display a list stating how many Movies are directed by each “Director”***
+db.Movies_data.aggregate({$group:{_id:"$Director", No_of_movies:{$sum:1}}});
+
+***Display list of Movies with the highest BoxOfficeCollection in each Genre***
+db.Movies_data.aggregate({$group:{_id:"$Genre", highest_collection:{$max:"$collection"}}});
+
+***Display list of Movies with the highest BoxOfficeCollection in each Genre in ascending order of BoxOfficeCollection***
+db.Movies_data.aggregate([{$group:{_id:"$Genre", highest_collection:{$max:"$collection"}}},{$sort:{"highest_collection":1}}]);
+
+***Create an index on field Movie_ID***
+db.Movies_data.createIndex({ID:1});
+
+***Create an index on fields ” Movie_Name” and ” Director”***
+db.Movies_data.createIndex({Name:1, Director:1});
+
+***Drop an index on field Movie_ID*** 
+db.Movies_data.dropIndex({ID:1});
+
+***Drop an index on fields ” Movie_Name” and ” Director”***
+db.Movies_data.dropIndex({Name:1, Director:1});
