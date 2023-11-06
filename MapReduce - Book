@@ -1,0 +1,39 @@
+Create Book Collection with (Title, Author_name, Borrowed_status) as fields. Write Map Reduce Functions for
+following requirements.
+
+db.createCollection('Book');
+
+***Display Author wise list of books***
+var map = function(){emit(this.author,{ books:[this.title]})};
+var reduce = function(author,values){
+  var result : {books :[]};
+  values.forEach(function(value){
+    result.book = result.book.concat(value.books);
+    });
+};
+db.Book.mapReduce(map,reduce,{out:"Author"});
+db.Author.find();
+
+
+***Display Author wise list of books having Borrowed status as “True”***
+var map = function(){if(this.status='True'){emit(this.author,{ books:[this.title]})}};
+var reduce = function(author,values){
+  var result : {books :[]};
+  values.forEach(function(value){
+    result.book = result.book.concat(value.books);
+    });
+};
+db.Book.mapReduce(map,reduce,{out:"Author"});
+db.Author.find();
+
+
+***Display Author wise list of books having price greater than 300***
+var map = function(){if(this.price>300){emit(this.author,{ books:[this.title]})}};
+var reduce = function(author,values){
+  var result : {books :[]};
+  values.forEach(function(value){
+    result.book = result.book.concat(value.books);
+    });
+};
+db.Book.mapReduce(map,reduce,{out:"Author"});
+db.Author.find();
