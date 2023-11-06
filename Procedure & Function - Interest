@@ -1,3 +1,13 @@
+Consider following schema for Bank database.
+Account(Account_No, Cust_Name, Balance, NoOfYears)
+Earned_Interest(Account_No, Interest_Amt)
+1. Write a PL/SQL procedure for following requirement. Take as input Account_No and Interest Rate from User.
+Calculate the Interest_Amt as simple interest for the given Account_No and store it in Earned_Interest table.
+Display all the details of Earned_Interest Table.
+2. Write a PLSQL function to display all records from Account table having Balance greater than 50,000.
+
+
+
 CREATE TABLE Account(Account_No VARCHAR(30), Cust_Name VARCHAR(30), Balance NUMBER, NoOfYears INT);
 CREATE TABLE Earned_Interest(Account_No VARCHAR(30), Interest_Amt NUMBER);
 
