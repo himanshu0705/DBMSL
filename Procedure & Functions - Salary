@@ -1,3 +1,13 @@
+Employee( emp_id, dept_idemp_name, DoJ, salary, commission,job_title)
+1. Consider the schema given above. Keep the commission column empty initially. Write a Stored Procedure to
+record the employee commission based on following conditions. If salary is more than 10000 then commission
+is 0.4%, if Salary is less than 10000 but experience is more than 10 years then 0.35%, if salary is less than 3000
+then commission is 0.25%. In the remaining cases commission is 0.15%.
+2. Write a PLSQL Function that takes department ID and returns the name of the manager of the department.
+
+
+
+
 CREATE TABLE Employee1(emp_id INT, dept_id INT, emp_name VARCHAR(30), DoJ DATE, salary NUMBER, commission NUMBER,job_title VARCHAR(30));
 
 SELECT * FROM Employee1;
