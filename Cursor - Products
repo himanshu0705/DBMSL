@@ -1,0 +1,39 @@
+CREATE TABLE Products(Product_id INT, Product_Name VARCHAR(30), Product_Type VARCHAR(30), Price NUMBER);
+
+SELECT * FROM Products;
+
+***Parameterized Cursor***
+DECLARE
+    min_price NUMBER;
+    max_price NUMBER;
+    CURSOR apparel(min_num NUMBER,max_num NUMBER) IS SELECT Product_Name,Price FROM Products WHERE Price>=min_num AND Price<=max_num AND Product_Type='Apparel';
+BEGIN
+    min_price := &min_price;
+    max_price := &max_price;
+    DBMS_OUTPUT.PUT_LINE('Available Products under range : Rs' || min_price || ' to  Rs' || max_price);
+    FOR product in apparel(min_price,max_price)
+        LOOP
+            DBMS_OUTPUT.PUT_LINE(product.Product_Name || ' : Rs' || product.Price);
+        END LOOP;
+END;
+
+***********************************************************************************************************************************************************************************************************
+***Explicit Cursor***
+DECLARE
+    CURSOR greater IS SELECT Product_Name,Price FROM Products WHERE Price>5000;
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('Available Products over Rs 5000');
+    FOR product in greater
+        LOOP
+            DBMS_OUTPUT.PUT_LINE(product.Product_Name || ' : Rs' || product.Price);
+        END LOOP;
+END;
+
+**********************************************************************************************************************************************************************************************************
+DECLARE
+    row_count NUMBER;
+BEGIN
+    UPDATE Products SET Price = Price + 1000;
+    row_count := SQL%ROWCOUNT;
+    DBMS_OUTPUT.PUT_LINE('Number of Rows Updated : ' || row_count);
+END;
