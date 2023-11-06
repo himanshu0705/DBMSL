@@ -1,0 +1,23 @@
+Create a collection Social_Media having fields as User_Id, User_Name, No_of_Posts, No_of_Friends,
+Friends_List, Interests. (Hint: Friends_List and Interests can be of array type)
+Insert 20 documents in the collection Social_Media. Write queries for following.
+
+
+db.createCollection("Social_Media");
+db.Social_Media.insertMany([{},{}]);
+db.Social_Media.find();
+
+***List all the users from collection Social_Media in formatted manner***
+db.Social_Media.find().pretty();
+
+***Find all users having number of posts greater than 100***
+db.Social_Media.find({No_of_Posts:{$gt:10}});
+
+***List the user names and their respective Friens_List***
+db.Social_Media.find({},{_id:0, User_Name:1, Friend_list:1});
+
+***Display the user ids and Friends list of users who have more than 5 friends***
+db.Social_Media.find({No_0f_friends:{$gt:5}},{_id:0, User_ID:1, Friend_list:1});
+
+***Display all users with no of posts in descending order***
+db.Social_Media.find().sort({No_of_Posts:-1});
