@@ -1,0 +1,39 @@
+Employee( emp_id, dept_idemp_name, DoJ, salary, commission,job_title)
+Consider the schema given above for Write a PLSQL Program to
+1. Create a Trigger to ensure the salary of the employee is not decreased.
+2. Whenever the job title is changed for an employee write the following details into job_history table. Employee
+ID, old job title, old department ID, DoJ for start date, system date for end date.
+
+
+
+CREATE TABLE Employee4(emp_id INT, dept_id INT, emp_name VARCHAR(30), DoJ DATE, salary NUMBER, commission NUMBER,job_title VARCHAR(30));
+CREATE TABLE job_history(emp_id INT, old_job_title VARCHAR(30), old_department_id INT, start_date DATE, end_date DATE);
+
+INSERT INTO Employee4 VALUES(1,101,'Himanshu','07-05-2020',100000,10000 ,'Data Scientist');
+INSERT INTO Employee4 VALUES(2,101,'Srushti','20-08-2020',40000,4000,'Full Stack Developer');
+INSERT INTO Employee4 VALUES(3,102,'Baban','16-02-1984',60000,6000,'Business Manager');
+INSERT INTO Employee4 VALUES(4,102,'Kalpana','07-03-1986',20000,2000,'Business Communist');
+
+SELECT * FROM Employee4;
+
+CREATE OR REPLACE TRIGGER salary_decrement
+BEFORE UPDATE OF salary ON Employee4
+FOR EACH ROW
+BEGIN
+    IF :NEW.salary < :OLD.salary THEN
+        RAISE_APPLICATION_ERROR(-20001,'Cannot decrement salary');
+    END IF;
+END;
+
+UPDATE Employee4 SET salary=90000 WHERE emp_id=2;
+
+*******************************************************************************************************************************************************************************************************
+CREATE OR REPLACE TRIGGER salary_decrement
+BEFORE UPDATE OF job_title ON Employee4
+FOR EACH ROW
+BEGIN
+    INSERT INTO job_history VALUES(:OLD.emp_id, :OLD.job_title, :OLD.dept_id, :OLD.DoJ, SYSDATE);
+END;
+
+UPDATE Employee4 SET job_title='CEO' WHERE emp_id=1;
+SELECT * FROM job_history;
