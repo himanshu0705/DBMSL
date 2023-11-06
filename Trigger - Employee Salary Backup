@@ -1,0 +1,32 @@
+Employee(emp_id, emp_name, salary, designation)
+Salary_Backup(emp_id, old_salary, new_salary, salary_difference)
+Create a Trigger to record salary change of the employee. Whenever salary is updated insert the details in
+Salary_Backup table.
+Create a Trigger that will prevent deleting the employee record having designation as CEO.
+
+
+
+CREATE TABLE Employee3(emp_id INT, emp_name VARCHAR(30), salary NUMBER, designation VARCHAR(30));
+CREATE TABLE Salary_Backup(emp_id INT , old_salary NUMBER, new_salary NUMBER, salary_difference NUMBER);
+
+CREATE OR REPLACE TRIGGER salary_change
+BEFORE UPDATE OF Salary ON Employee3
+FOR EACH ROW
+BEGIN
+    INSERT INTO Salary_Backup (emp_id, old_salary, new_salary, salary_difference) VALUES(:OLD.emp_id, :OLD.salary, :NEW.salary, :NEW.salary - :OLD.salary);
+END;
+
+UPDATE Employee3 SET salary=100000 WHERE emp_id=3;
+SELECT * FROM Salary_Backup;
+
+***********************************************************************************************************************************************************************************************************
+CREATE OR REPLACE TRIGGER del_err
+BEFORE DELETE ON Employee3
+FOR EACH ROW
+BEGIN
+    IF :OLD.designation='CEO' THEN
+        RAISE_APPLICATION_ERROR(-20001,'Cannot delete CEO data');
+    END IF;
+END;
+
+DELETE FROM Employee WHERE emp_id=3;
